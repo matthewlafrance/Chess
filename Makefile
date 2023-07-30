@@ -2,8 +2,10 @@ MAIN=Main
 BUILD_DIR=target
 SRC_DIR=src
 
-.PHONY: run
+.PHONY: build run
 
-run:
-	javac -d $(BUILD_DIR) $(SRC_DIR)/$(MAIN).java
-	java --class-path $(BUILD_DIR) $(MAIN)
+run: build
+	java --class-path $(BUILD_DIR) $(MAIN)\
+
+build:
+	javac -d $(BUILD_DIR) $(SRC_DIR)/*.java
