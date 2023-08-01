@@ -12,30 +12,22 @@ public class Main {
         System.out.println();
 
         Scanner input = new Scanner(System.in);
-        Color currentPlayer = Color.WHITE;
         Board chessBoard = new Board();
 
         while (true) {
             System.out.println(chessBoard);
             System.out.println();
-            System.out.print(currentPlayer.toString() + " to move: ");
+            System.out.print(chessBoard.getCurrentPlayer().toString() + " to move: ");
+            Move move = Move.parse(input.next());
 
-            Pattern move = Pattern.compile("(P|N|Q|B|R|K)([a-h][1-8])([a-h][1-8])");
-            
-            while (!input.hasNext(move)) {
+            while (move == null) {
                 System.out.println("error: invalid move");
-                input.next();
                 System.out.print("try again: ");
+                move = Move.parse(input.next());
             }
 
-            System.out.println(input.next(move));
+            chessBoard.makeMove(move);
             System.out.println();
-            
-            if (currentPlayer == Color.WHITE) {
-                currentPlayer = Color.BLACK;
-            } else {
-                currentPlayer = Color.WHITE;
-            }
         }
     }
 }
