@@ -30,8 +30,8 @@ public class Board {
                 a  b  c  d  e  f  g  h
         */
 
-        for (int i = 0; i < SIZE; i++) {
-            board += SIZE - i + "   ";
+        for (int i = SIZE - 1; i >= 0; i--) {
+            board += i + 1 + "   ";
 
             for (int j = 0; j < SIZE; j++) {
                 board += pieces[i][j] == null ? "." : pieces[i][j];
@@ -63,12 +63,12 @@ public class Board {
 
         pieces[row] = new Piece[]{
             new Piece(Piece.Kind.ROOK, color),
-            new Piece(Piece.Kind.BISHOP, color),
             new Piece(Piece.Kind.KNIGHT, color),
+            new Piece(Piece.Kind.BISHOP, color),
             new Piece(Piece.Kind.QUEEN, color),
             new Piece(Piece.Kind.KING, color),
-            new Piece(Piece.Kind.KNIGHT, color),
             new Piece(Piece.Kind.BISHOP, color),
+            new Piece(Piece.Kind.KNIGHT, color),
             new Piece(Piece.Kind.ROOK, color),
         };
     }
@@ -78,25 +78,27 @@ public class Board {
         initRoyals(color);
     }
 
-    public void makeMove(Move move) {
-        // if piece is on right square and the ending square is valid
-        // check differently based on what piece it is
-        // execute move
-            // take the piece on initial square and replace the destination square with the piece, removing it from initial
-
+    public boolean makeMove(Move move) {
         Piece movingPiece = pieces[move.src.row][move.src.column];
+        Piece[][] gameBoard = this.pieces;
+        int destRow = move.dest.row;
+        int destColumn = move.dest.column;
+        int srcRow = move.src.row;
+        int srcColumn = move.src.column;
         
         if (move.piece == movingPiece.kind) {
             if (movingPiece.isValidMove(move.src, move.dest, this)) {
-                System.out.println("valid move");
+                gameBoard[destRow][destColumn] = movingPiece;
+                gameBoard[srcRow][srcColumn] = null;
+                this.changeTurn();
+
+                return true;
             } else {
-                System.out.println("invalid move");
+                return false;
             }
         } else {
-            System.out.println("wrong piece");
+            return false;
         }
-
-        this.changeTurn();
     }
 
     public boolean hasPiece(Square sq) {

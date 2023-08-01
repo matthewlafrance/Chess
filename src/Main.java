@@ -20,13 +20,12 @@ public class Main {
             System.out.print(chessBoard.getCurrentPlayer().toString() + " to move: ");
             Move move = Move.parse(input.next());
 
-            while (move == null) {
+            while (move == null || !chessBoard.makeMove(move)) {
                 System.out.println("error: invalid move");
                 System.out.print("try again: ");
                 move = Move.parse(input.next());
             }
 
-            chessBoard.makeMove(move);
             System.out.println();
         }
     }
