@@ -144,4 +144,18 @@ public class Board {
 
         return true;
     }
+
+    public boolean gameOver() {
+        int kingCount = 0;
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (this.pieces[i][j] != null && this.pieces[i][j].kind == Piece.Kind.KING) {
+                    kingCount++;
+                }
+            }
+        }
+        
+        return kingCount != 2;
+    }
 }
