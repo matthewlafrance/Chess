@@ -1,5 +1,4 @@
-import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,12 +13,12 @@ public class Main {
         Scanner input = new Scanner(System.in);
         Board chessBoard = new Board();
         boolean gameOver = false;
+        ArrayDeque moveStack = new ArrayDeque();
 
         while (!gameOver) {
             System.out.println(chessBoard);
             System.out.println();
             System.out.print(chessBoard.getCurrentPlayer() + " to move: ");
-            Move move = Move.parse(input.next());
 
             while (move == null || !chessBoard.makeMove(move)) {
                 System.out.println("error: invalid move");
@@ -30,6 +29,10 @@ public class Main {
             System.out.println();
 
             gameOver = chessBoard.gameOver();
+        }
+
+        if (this.isInCheck) {
+            System.out.println("" + chessBoard.getCurrentPlayer() + " is in check");
         }
 
         System.out.println("Game Over! " + chessBoard.getCurrentPlayer().opposite() + " Wins!");

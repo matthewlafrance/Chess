@@ -4,6 +4,7 @@ public class Board {
     public static final int WHITE_PAWNS_START_ROW = 1;
     public static final int BLACK_ROYALS_START_ROW = SIZE - 1;
     public static final int BLACK_PAWNS_START_ROW = SIZE - 2;
+    public ArrayDeque moveStack = new ArrayDeque();
 
     private Piece[][] pieces = new Piece[SIZE][SIZE];
     private Color currentPlayer = Color.WHITE;
@@ -85,9 +86,12 @@ public class Board {
         int destColumn = move.dest.column;
         int srcRow = move.src.row;
         int srcColumn = move.src.column;
+
+        // check if a move puts a player in check
         
         if (move.piece == movingPiece.kind) {
             if (movingPiece.isValidMove(move.src, move.dest, this)) {
+                this.moveStack.add(move);
                 gameBoard[destRow][destColumn] = movingPiece;
                 gameBoard[srcRow][srcColumn] = null;
                 this.changeTurn();
@@ -155,7 +159,32 @@ public class Board {
                 }
             }
         }
-        
+
         return kingCount != 2;
+    }
+
+    public boolean isInCheck() {
+        Square src;
+        Square dest;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (this.pieces[i][j].kind == KING && this.pieces[i][j].color == currentPlayer) {
+                    dest.row = j;
+                    dest.column = i;
+                }
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                src.row = i;
+                src.column = j;
+                if (this.pieces[i][j].isValidMove(src, dest, this)) {
+                    return true; 
+                }
+            }
+        }
+
+        return false;
     }
 }
