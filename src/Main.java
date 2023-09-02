@@ -33,5 +33,6 @@ public class Main {
         }
 
         System.out.println("Game Over! " + chessBoard.getCurrentPlayer().opposite() + " Wins!");
+        
     }
 }
