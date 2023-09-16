@@ -59,16 +59,19 @@ public class Piece {
         }
     }
     
-    public boolean isValidMove(Square src, Square dest, Board board) {
-        // first check what type of piece it is
-        // make equation for each type of piece that gives all valid squares based on src
-        // check if dest satisfies the corresponding equation based on src and piece kind
-        int column = src.column;
-        int row = src.row;
+    public boolean canMakeMove(Square src, Square dest, Board board) {
 
         if (this.color != board.getCurrentPlayer()) {
             return false;
         }
+        
+        return this.isValidMove(src, dest, board);
+    }
+
+    public boolean isValidMove(Square src, Square dest, Board board) {
+        // first check what type of piece it is
+        // make equation for each type of piece that gives all valid squares based on src
+        // check if dest satisfies the corresponding equation based on src and piece kind
 
         boolean validSquare, validMove, validLength;
 

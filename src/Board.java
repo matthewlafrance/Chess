@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Board {
     public static final int SIZE = 8;
     public static final int WHITE_ROYALS_START_ROW = 0;
@@ -7,6 +9,7 @@ public class Board {
 
     private Piece[][] pieces = new Piece[SIZE][SIZE];
     private Color currentPlayer = Color.WHITE;
+    private ArrayDeque<Move> moveStack= new ArrayDeque<Move>();
 
     public Board() {
         initPieces(Color.WHITE);
@@ -87,11 +90,11 @@ public class Board {
         int srcColumn = move.src.column;
         
         if (move.piece == movingPiece.kind) {
-            if (movingPiece.isValidMove(move.src, move.dest, this)) {
+            if (movingPiece.canMakeMove(move.src, move.dest, this)) {
                 gameBoard[destRow][destColumn] = movingPiece;
                 gameBoard[srcRow][srcColumn] = null;
                 this.changeTurn();
-
+                this.moveStack.addLast(move);
                 return true;
             } else {
                 return false;
@@ -146,6 +149,7 @@ public class Board {
     }
 
     public boolean gameOver() {
+
         int kingCount = 0;
 
         for (int i = 0; i < SIZE; i++) {
@@ -154,8 +158,44 @@ public class Board {
                     kingCount++;
                 }
             }
-        }
-        
+        }    
         return kingCount != 2;
+    }
+
+    public boolean isInCheck(Color color) {
+
+        int kingRow = 0;
+        int kingColumn = 0;
+        Square current = new Square(0, 0);
+        
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                current.row = i;
+                current.column = j;
+                if (this.hasPiece(current) && 
+                this.getPiece(current).kind == Piece.Kind.KING && 
+                this.getPiece(current).color == color) {
+                    kingRow = i;
+                    kingColumn = j;
+                }
+            }
+        }
+
+        Square dest = new Square(kingColumn, kingRow);
+        boolean check = false;
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                current.row = i;
+                current.column = j;
+                if (this.getPiece(current) != null && this.getPiece(current).color != color) {
+                    check = this.getPiece(current).isValidMove(current, dest, this);
+                }
+                if (check) {
+                    return true;
+                }
+            }
+        }
+        return check;
     }
 }
