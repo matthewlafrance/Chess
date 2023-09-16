@@ -32,9 +32,4 @@ public class Move {
 
         return new Move(piece, src, dest);
     }
-
-    public String toString() {
-        String move = "" + this.piece.toString() + this.src.toString() + this.dest.toString();
-        return move;
-    }
 }

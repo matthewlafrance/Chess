@@ -67,10 +67,4 @@ public class Square {
     public static int verticalPathLength(Square src, Square dest) {
         return Math.abs(dest.row - src.row);
     }
-    
-    public String toString() {
-        String square = "" + ((char)(this.column + 1)) + ((char)(this.row + 1));
-        System.out.println((char)this.row);
-        return square;
-    }
 }

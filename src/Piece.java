@@ -133,13 +133,4 @@ public class Piece {
     public boolean validSquare(Square dest, Board board) {
         return !board.hasPiece(dest) || board.hasOpposingPiece(dest, this.color);
     }
-
-    public boolean equals(Object object) {
-        Piece piece = (Piece)object;
-        if (this.kind == piece.kind) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
